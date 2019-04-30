@@ -11,13 +11,13 @@ link :=
 libs := 
 
 gxx := xcrun --sdk iphoneos g++
-cycc := $(gxx) -I.
+cycc := $(gxx) -I. -L.
 
-sdk := $(theos_path)/sdks/iPhoneOS11.2.sdk
+sdk := $(shell xcodebuild -sdk iphoneos -version Path)
 cycc += -idirafter /usr/include
-cycc += -F$(sdk)/System/Library/PrivateFrameworks
+cycc += -F$(theos_path)/sdks/iPhoneOS10.3.sdk/System/Library/PrivateFrameworks
 
-ARCHS := armv6 arm64
+ARCHS := arm64 armv6
 cycc += $(foreach arch,$(ARCHS),-arch $(arch))
 
 ifeq ("$(findstring armv6,$(ARCHS))","armv6")
@@ -188,11 +188,11 @@ MobileCydia: sysroot Objects/libapt.a $(object) entitlements.xml # Objects/UIKit
 	@ldid -T0 -Sentitlements.xml $@ || { rm -f $@ && false; }
 
 cfversion: cfversion.mm
-	$(cycc) -o $@ $(filter %.mm,$^) $(flag) $(link) -framework CoreFoundation
+	$(cycc) -stdlib=libc++ -o $@ $(filter %.mm,$^) $(flag) $(link) -framework CoreFoundation
 	@ldid -T0 -Sgenent.xml $@
 
 setnsfpn: setnsfpn.cpp
-	$(cycc) -o $@ $(filter %.cpp,$^) $(flag) $(link)
+	$(cycc) -stdlib=libc++ -o $@ $(filter %.cpp,$^) $(flag) $(link)
 	@ldid -T0 -Sgenent.xml $@
 
 cydo: cydo.cpp
