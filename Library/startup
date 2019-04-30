@@ -19,5 +19,5 @@ fi
 
 if [[ ${cache+@} ]]; then
     sbdidlaunch
-    su -c uicache mobile
+    su -c "uicache --all" mobile
 fi
