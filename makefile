@@ -1,7 +1,8 @@
 .DELETE_ON_ERROR:
 .SECONDARY:
 
-dpkg := fakeroot dpkg-deb -Zlzma
+theos_path := /opt/theos
+dpkg := fakeroot $(theos_path)/bin/dm.pl -Zlzma
 version := $(shell ./version.sh)
 
 flag := 
@@ -10,9 +11,9 @@ link :=
 libs := 
 
 gxx := xcrun --sdk iphoneos g++
-cycc := $(gxx)
+cycc := $(gxx) -I.
 
-sdk := $(shell xcodebuild -sdk iphoneos -version Path)
+sdk := $(theos_path)/sdks/iPhoneOS11.2.sdk
 cycc += -idirafter /usr/include
 cycc += -F$(sdk)/System/Library/PrivateFrameworks
 
@@ -208,7 +209,7 @@ debs/cydia_$(version)_iphoneos-arm.deb: MobileCydia preinst postinst cfversion s
 	
 	mkdir -p _/etc/apt
 	cp -a Trusted.gpg _/etc/apt/trusted.gpg.d
-	cp -a Sources.list _/etc/apt/sources.list.d
+	cp -a Sources.list _/etc/apt/cydiasources.d
 	
 	mkdir -p _/usr/libexec
 	cp -a Library _/usr/libexec/cydia
