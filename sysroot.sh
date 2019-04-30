@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-if [[ ${BASH_VERSION} != 4* ]]; then
+if [[ ${BASH_VERSION} == 3* || ${BASH_VERSION} == 2* || ${BASH_VERSION} == 1* ]]; then
     echo "bash 4.0 required" 1>&2
     exit 1
 fi
