@@ -35,11 +35,8 @@ void CydiaWriteSources() {
     FILE *file(fopen(SOURCES_LIST, "w"));
     _assert(file != NULL);
 
-    if (kCFCoreFoundationVersionNumber >= 1443) {
-        fprintf(file, "deb https://apt.bingner.com/ ios/%.2f main\n", kCFCoreFoundationVersionNumber);
-    } else {
+    if (kCFCoreFoundationVersionNumber < 1443) {
         fprintf(file, "deb http://apt.saurik.com/ ios/%.2f main\n", kCFCoreFoundationVersionNumber);
-        fprintf(file, "deb https://apt.bingner.com/ ./\n");
     }
 
     for (NSString *key in [Sources_ allKeys]) {
@@ -47,9 +44,6 @@ void CydiaWriteSources() {
             continue;
 
         NSDictionary *source([Sources_ objectForKey:key]);
-        // Ignore it if main source is added again
-        if ([[source objectForKey:@"URI"] hasPrefix:@"http://apt.bingner.com"] || [[source objectForKey:@"URI"] hasPrefix:@"https://apt.bingner.com"])
-            continue;
 
 
         NSArray *sections([source objectForKey:@"Sections"] ?: [NSArray array]);
@@ -67,10 +61,6 @@ void CydiaWriteSources() {
 }
 
 void CydiaAddSource(NSDictionary *source) {
-    // Ignore it if main source is added again
-    if ([[source objectForKey:@"URI"] hasPrefix:@"http://apt.bingner.com"] || [[source objectForKey:@"URI"] hasPrefix:@"https://apt.bingner.com"])
-        return;
-
     [Sources_ setObject:source forKey:[NSString stringWithFormat:@"%@:%@:%@", [source objectForKey:@"Type"], [source objectForKey:@"URI"], [source objectForKey:@"Distribution"]]];
 }
 
