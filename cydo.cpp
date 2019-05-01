@@ -89,7 +89,7 @@ int main(int argc, char *argv[]) {
     auto cydia(false);
 
     struct stat correct;
-    if (lstat("/Applications/Cydia.app/Cydia", &correct) == -1) {
+    if (lstat("/Applications/Cydia-uni.app/Cydia", &correct) == -1) {
         fprintf(stderr, "you have no arms left");
         return EX_NOPERM;
     }

@@ -223,16 +223,16 @@ debs/cydia_$(version)_iphoneos-arm.deb: MobileCydia preinst postinst cfversion s
 	cp -a LaunchDaemons _/Library/LaunchDaemons
 	
 	mkdir -p _/Applications
-	cp -a MobileCydia.app _/Applications/Cydia.app
-	rm -rf _/Applications/Cydia.app/*.lproj
-	cp -a MobileCydia _/Applications/Cydia.app/Cydia
-	ln -s Cydia _/Applications/Cydia.app/store
+	cp -a MobileCydia.app _/Applications/Cydia-uni.app
+	rm -rf _/Applications/Cydia-uni.app/*.lproj
+	cp -a MobileCydia _/Applications/Cydia-uni.app/Cydia
+	ln -s Cydia _/Applications/Cydia-uni.app/store
 	
-	cd MobileCydia.app && find . -name '*.png' -exec cp -af ../Images/MobileCydia.app/{} ../_/Applications/Cydia.app/{} ';'
+	cd MobileCydia.app && find . -name '*.png' -exec cp -af ../Images/MobileCydia.app/{} ../_/Applications/Cydia-uni.app/{} ';'
 	
-	mkdir -p _/Applications/Cydia.app/Sources
-	ln -s /usr/share/bigboss/icons/bigboss.png _/Applications/Cydia.app/Sources/apt.bigboss.us.com.png
-	ln -s /usr/share/bigboss/icons/planetiphones.png _/Applications/Cydia.app/Sections/"Planet-iPhones Mods.png"
+	mkdir -p _/Applications/Cydia-uni.app/Sources
+	ln -s /usr/share/bigboss/icons/bigboss.png _/Applications/Cydia-uni.app/Sources/apt.bigboss.us.com.png
+	ln -s /usr/share/bigboss/icons/planetiphones.png _/Applications/Cydia-uni.app/Sections/"Planet-iPhones Mods.png"
 	
 	mkdir -p _/DEBIAN
 	./control.sh cydia.control _ >_/DEBIAN/control
@@ -251,9 +251,9 @@ debs/cydia_$(version)_iphoneos-arm.deb: MobileCydia preinst postinst cfversion s
 
 $(lproj_deb): $(shell find MobileCydia.app -name '*.strings') cydia-lproj.control
 	fakeroot rm -rf __
-	mkdir -p __/Applications/Cydia.app
+	mkdir -p __/Applications/Cydia-uni.app
 	
-	cp -a MobileCydia.app/*.lproj __/Applications/Cydia.app
+	cp -a MobileCydia.app/*.lproj __/Applications/Cydia-uni.app
 	
 	mkdir -p __/DEBIAN
 	./control.sh cydia-lproj.control __ >__/DEBIAN/control

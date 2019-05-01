@@ -7,12 +7,12 @@ Version:
 Replaces: cydia, bigboss, bigbossbetarepo, com.sosiphone.addcydia, cydia-sources, ispazio.net, modmyifone, saurik, ste, yellowsn0w.com, zodttd
 Depends: apt7-lib | libapt, apt7-key | apt-key, cydia-lproj (>= 1.1.10), darwintools, debianutils, dpkg (>= 1.18), sed, shell-cmds, system-cmds, uikittools (>= 1.1.4), lzma | xz
 Recommends: org.thebigboss.repo.icons
-Conflicts: cydia, bigboss, bigbossbetarepo, com.sosiphone.addcydia, cydia-sources, ispazio.net, modmyifone, ste, yellowsn0w.com, zodttd
+Conflicts: cydia (>>1.2), bigboss, bigbossbetarepo, com.sosiphone.addcydia, cydia-sources, ispazio.net, modmyifone, ste, yellowsn0w.com, zodttd
 Pre-Depends: debianutils, dpkg (>= 1.14.25-8), firmware (>=5.0)
 Provides: bigbossbetarepo, cydia-sources, cydia (= 3.0)
 Description: graphical iPhone front-end for APT
 Name: Cydia Installer
 Author: Jay Freeman (saurik) <saurik@saurik.com>
 Depiction: http://cydia.saurik.com/info/cydia/
-Icon: file:///Applications/Cydia.app/Icon-60.png
+Icon: file:///Applications/Cydia-uni.app/Icon-60.png
 Tag: purpose::uikit, cydia::essential, role::enduser

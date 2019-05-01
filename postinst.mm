@@ -293,6 +293,10 @@ int main(int argc, const char *argv[]) {
         restart |= FixApplications();
     }
 
+	if (system("/bin/grep Electra /usr/bin/uicache") == 0) {
+		system("/usr/bin/uicache --path /Applications/Cydia-uni.app");
+	}
+
     if (restart)
         Finish("restart");
 

@@ -2998,7 +2998,7 @@ struct PackageNameOrdering :
 
         if (NSArray *files = [self files])
             for (NSString *file in files)
-                if (!cydia && [file isEqualToString:@"/Applications/Cydia.app"])
+                if (!cydia && [file isEqualToString:@"/Applications/Cydia-uni.app"])
                     cydia = true;
                 else if (!user && [file isEqualToString:@"/User"])
                     user = true;
@@ -9471,7 +9471,7 @@ int main(int argc, char *argv[]) {
     common_arch = arch->Value.c_str();
     _config->Set("Acquire::AllowInsecureRepositories", true);
     _config->Set("Acquire::Check-Valid-Until", false);
-    _config->Set("Dir::Bin::Methods::store", "/Applications/Cydia.app/store");
+    _config->Set("Dir::Bin::Methods::store", "/Applications/Cydia-uni.app/store");
 
     _config->Set("pkgCacheGen::ForceEssential", "");
 
@@ -9483,7 +9483,7 @@ int main(int argc, char *argv[]) {
     //_config->Set("Acquire::http::Timeout", 15);
 
     int64_t usermem(0);
-    size = sizeof(usermem);
+    size = sizeof(usermem); 
     if (sysctlbyname("hw.usermem", &usermem, &size, NULL, 0) == -1)
         usermem = 0;
     _config->Set("Acquire::http::MaxParallel", usermem >= 384 * 1024 * 1024 ? 16 : 3);
