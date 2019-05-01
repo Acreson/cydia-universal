@@ -1,5 +1,4 @@
 Package: cydia-uni
-Priority: required
 Section: Packaging
 Maintainer: Jay Freeman (saurik) <saurik@saurik.com>
 Architecture: iphoneos-arm
