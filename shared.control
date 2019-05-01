@@ -1,11 +1,12 @@
-Package: cydia-uni-lproj
+Package: cydia-shared
 Section: Packaging
 Maintainer: PixelOmer
 Architecture: iphoneos-arm
 Version: 
 Depends: cydia-uni
-Description: languages and translations for Cydia
-Name: Cydia Universal Translations
+Conflicts: cydia
+Provides: cydia (= 3.0)
+Description: Shared utilities for Cydia
+Name: Cydia Shared Utilities
 Author: Jay Freeman (saurik) <saurik@saurik.com>
-Depiction: http://cydia.saurik.com/info/cydia-lproj/
 Tag: purpose::uikit, role::enduser

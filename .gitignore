@@ -4,6 +4,8 @@ CydiaAppliance
 postinst
 _
 __
+___
+Shared.deb
 Cydia.deb
 Cydia_.deb
 debs

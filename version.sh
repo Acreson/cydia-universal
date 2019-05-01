@@ -1,3 +1,3 @@
 #!/bin/bash
 
-echo "1.1.31"
+echo "1.1.31a"

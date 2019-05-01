@@ -203,24 +203,39 @@ postinst: postinst.mm CyteKit/stringWithUTF8Bytes.mm CyteKit/stringWithUTF8Bytes
 	$(cycc) $(plus) -o $@ $(filter %.mm,$^) $(flag) $(link) -framework CoreFoundation -framework Foundation -framework UIKit
 	@ldid -T0 -Sgenent.xml $@
 
-debs/cydia_$(version)_iphoneos-arm.deb: MobileCydia preinst postinst cfversion setnsfpn cydo $(images) $(shell find MobileCydia.app) cydia.control Library/firmware.sh Library/move.sh Library/startup
+debs/cydia-shared_$(version)_iphoneos-arm.deb: postinst shared.control Library/firmware.sh Library/move.sh Library/startup cfversion setnsfpn cydo
+	fakeroot rm -rf ___
+	mkdir -p ___/var/lib/cydia
+	
+	mkdir -p ___/etc/apt
+	cp -a Trusted.gpg ___/etc/apt/trusted.gpg.d
+	
+	mkdir -p ___/usr/libexec
+	cp -a Library ___/usr/libexec/cydia
+	cp -a sysroot/usr/bin/du ___/usr/libexec/cydia
+	cp -a cfversion ___/usr/libexec/cydia
+	cp -a setnsfpn ___/usr/libexec/cydia
+	
+	cp -a cydo ___/usr/libexec/cydia
+	
+	mkdir -p ___/Library
+	cp -a LaunchDaemons ___/Library/LaunchDaemons
+
+	mkdir -p ___/DEBIAN
+	./control.sh shared.control ___ >___/DEBIAN/control
+	cp -a triggers postinst ___/DEBIAN
+
+	fakeroot chown -R 0 ___
+	fakeroot chgrp -R 0 ___
+	fakeroot chmod 6755 ___/usr/libexec/cydia/cydo
+
+	mkdir -p debs
+	ln -sf debs/cydia-shared_$(version)_iphoneos-arm.deb Shared.deb
+	$(dpkg) -b ___ Shared.deb
+	@echo "$$(stat -L -f "%z" Shared.deb) $$(stat -f "%Y" Shared.deb)"
+
+debs/cydia_$(version)_iphoneos-arm.deb: MobileCydia preinst postinst $(images) $(shell find MobileCydia.app) cydia.control 
 	fakeroot rm -rf _
-	mkdir -p _/var/lib/cydia
-	
-	mkdir -p _/etc/apt
-	cp -a Trusted.gpg _/etc/apt/trusted.gpg.d
-	cp -a Sources.list _/etc/apt/cydiasources.d
-	
-	mkdir -p _/usr/libexec
-	cp -a Library _/usr/libexec/cydia
-	cp -a sysroot/usr/bin/du _/usr/libexec/cydia
-	cp -a cfversion _/usr/libexec/cydia
-	cp -a setnsfpn _/usr/libexec/cydia
-	
-	cp -a cydo _/usr/libexec/cydia
-	
-	mkdir -p _/Library
-	cp -a LaunchDaemons _/Library/LaunchDaemons
 	
 	mkdir -p _/Applications
 	cp -a MobileCydia.app _/Applications/Cydia-uni.app
@@ -236,13 +251,15 @@ debs/cydia_$(version)_iphoneos-arm.deb: MobileCydia preinst postinst cfversion s
 	
 	mkdir -p _/DEBIAN
 	./control.sh cydia.control _ >_/DEBIAN/control
-	cp -a preinst postinst triggers _/DEBIAN/
+	cp -a preinst postinst _/DEBIAN/
 	
+	mkdir -p _/etc/apt/cydiasources.d
+	cp -a Sources.list _/etc/apt/cydiasources.d
+
 	find _ -exec touch -t "$$(date -j -f "%s" +"%Y%m%d%H%M.%S" "$$(git show --format='format:%ct' | head -n 1)")" {} ';'
 	
 	fakeroot chown -R 0 _
 	fakeroot chgrp -R 0 _
-	fakeroot chmod 6755 _/usr/libexec/cydia/cydo
 	
 	mkdir -p debs
 	ln -sf debs/cydia_$(version)_iphoneos-arm.deb Cydia.deb
@@ -266,6 +283,6 @@ $(lproj_deb): $(shell find MobileCydia.app -name '*.strings') cydia-lproj.contro
 	$(dpkg) -b __ Cydia_.deb
 	@echo "$$(stat -L -f "%z" Cydia_.deb) $$(stat -f "%Y" Cydia_.deb)"
 	
-package: debs/cydia_$(version)_iphoneos-arm.deb $(lproj_deb)
+package: debs/cydia_$(version)_iphoneos-arm.deb debs/cydia-shared_$(version)_iphoneos-arm.deb $(lproj_deb)
 
 .PHONY: all clean package
